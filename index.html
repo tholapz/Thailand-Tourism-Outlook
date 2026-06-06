@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แนวโน้มการท่องเที่ยว พฤษภาคม 2569 | Thailand Tourism Outlook May 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f4f7f8; --card:#ffffff; --ink:#143642; --muted:#5b7079;
+    --teal:#0a7d8c; --teal-d:#075c67; --green:#2f9e44; --red:#e03131;
+    --amber:#f08c00; --line:#e3eaec; --shadow:0 6px 24px rgba(15,60,70,.08);
+    --short:#0a7d8c; --long:#7048e8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  .lang-th body, body.th{font-family:'IBM Plex Sans Thai','Inter',sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header.top{position:sticky;top:0;z-index:50;background:linear-gradient(100deg,#075c67,#0a7d8c);color:#fff;box-shadow:0 2px 14px rgba(0,0,0,.15)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand .t1{font-weight:800;font-size:18px;letter-spacing:.2px}
+  .brand .t2{font-size:12.5px;opacity:.85;font-weight:500}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
+  nav.tabs a{color:#eaf6f8;text-decoration:none;font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.12);transition:.2s}
+  nav.tabs a:hover{background:rgba(255,255,255,.28)}
+  .langbtn{background:#fff;color:var(--teal-d);border:none;font-weight:700;padding:8px 14px;border-radius:999px;cursor:pointer;font-size:13px;font-family:inherit}
+  .langbtn:hover{background:#e6fbff}
+
+  .hero{background:linear-gradient(160deg,#0a7d8c 0%,#0d97a8 55%,#7bd1d9 140%);color:#fff;padding:46px 0 60px;position:relative;overflow:hidden}
+  .hero:after{content:"";position:absolute;right:-60px;bottom:-80px;width:340px;height:340px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);border-radius:50%}
+  .hero h1{font-size:34px;font-weight:800;line-height:1.2;max-width:760px}
+  .hero p.sub{margin-top:12px;font-size:15px;opacity:.92;max-width:680px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:30px}
+  .kpi{background:rgba(255,255,255,.14);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:18px}
+  .kpi .lbl{font-size:12.5px;opacity:.9;font-weight:600}
+  .kpi .val{font-size:30px;font-weight:800;margin-top:4px}
+  .kpi .chg{font-size:13px;font-weight:700;margin-top:2px}
+  .up{color:#b2f2bb}.down{color:#ffc9c9}
+  .up-i{color:var(--green)}.down-i{color:var(--red)}
+
+  section.block{padding:48px 0}
+  section.block:nth-child(even){background:#eef4f5}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .sec-head .num{background:var(--teal);color:#fff;font-weight:800;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:15px}
+  .sec-head h2{font-size:23px;font-weight:800}
+  .sec-sub{color:var(--muted);font-size:14px;margin:0 0 24px 46px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+  .card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+  .card .h-note{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .chart-box{position:relative;height:300px}
+  .chart-box.sm{height:260px}
+
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px}
+  .pill.s{background:#e3f6f8;color:var(--short)}
+  .pill.l{background:#efe9fd;color:var(--long)}
+  .split-bar{display:flex;height:14px;border-radius:8px;overflow:hidden;margin:10px 0 18px}
+  .split-bar .s{background:var(--short)}.split-bar .l{background:var(--long)}
+
+  table.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.tbl th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;padding:7px 8px;border-bottom:2px solid var(--line)}
+  table.tbl td{padding:8px;border-bottom:1px solid var(--line)}
+  table.tbl td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  table.tbl td.g{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .factor{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .factor:last-child{border-bottom:none}
+  .factor .ic{font-size:20px;line-height:1}
+  .factor .ft{font-weight:700;font-size:14.5px}
+  .factor .fd{font-size:13px;color:var(--muted);margin-top:2px}
+  .tag-sup{border-left:4px solid var(--green)}
+  .tag-obs{border-left:4px solid var(--red)}
+  .card.sup h3:before{content:"▲ ";color:var(--green)}
+  .card.obs h3:before{content:"▼ ";color:var(--red)}
+  .mini{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .mini span{background:#f1f5f6;border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-size:12px;font-weight:600}
+  .mini span b.up-i,.mini span b.down-i{font-weight:800}
+
+  .source{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.6}
+  footer{background:#0c2b33;color:#cfe3e6;padding:30px 0;font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  footer b{color:#fff}
+
+  [data-en]{display:none}
+  body.en [data-th]{display:none}
+  body.en [data-en]{display:inline}
+  body.en [data-en].blk{display:block}
+
+  @media(max-width:860px){
+    .grid2,.grid3{grid-template-columns:1fr}
+    .hero h1{font-size:26px}.sec-head h2{font-size:20px}
+    nav.tabs{display:none}
+  }
+</style>
+</head>
+<body class="th">
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="t1"><span data-th>แนวโน้มการท่องเที่ยว · พฤษภาคม 2569</span><span data-en>Thailand Tourism Outlook · May 2026</span></span>
+      <span class="t2"><span data-th>การท่องเที่ยวแห่งประเทศไทย (ททท.) · กองกลยุทธ์การตลาด</span><span data-en>Tourism Authority of Thailand (TAT) · Marketing Strategy Division</span></span>
+    </div>
+    <nav class="tabs">
+      <a href="#s1"><span data-th>ตลาดต่างประเทศ</span><span data-en>Foreign</span></a>
+      <a href="#s2"><span data-th>ปัจจัยต่างชาติ</span><span data-en>Drivers</span></a>
+      <a href="#s3"><span data-th>ตลาดในประเทศ</span><span data-en>Domestic</span></a>
+      <a href="#s4"><span data-th>ปัจจัยในประเทศ</span><span data-en>Factors</span></a>
+    </nav>
+    <button class="langbtn" id="langBtn">EN</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <h1><span data-th>แนวโน้มการท่องเที่ยวของไทย พฤษภาคม 2569</span><span data-en>Thailand Tourism Trends — May 2026</span></h1>
+    <p class="sub"><span data-th>คาดการณ์ตลาดต่างประเทศและในประเทศ จากพฤติกรรมการเดินทางในอดีตและความสามารถด้านที่นั่งโดยสาร (Seat Capacity) ข้อมูล ณ 27–30 เมษายน 2569</span><span data-en>Forecast for inbound and domestic markets, based on historical travel behaviour and air seat capacity. Data as of 27–30 April 2026.</span></p>
+    <div class="kpis">
+      <div class="kpi"><div class="lbl"><span data-th>นักท่องเที่ยวต่างชาติ</span><span data-en>Foreign arrivals</span></div><div class="val">2.0M</div><div class="chg down">−8% <span data-th>เทียบ พ.ค. 2568</span><span data-en>YoY</span></div></div>
+      <div class="kpi"><div class="lbl"><span data-th>ที่นั่งโดยสาร (Seat Capacity)</span><span data-en>Air seat capacity</span></div><div class="val">3.6M</div><div class="chg down">−2% <span data-th>เทียบ พ.ค. 2568</span><span data-en>YoY</span></div></div>
+      <div class="kpi"><div class="lbl"><span data-th>การเดินทางในประเทศ</span><span data-en>Domestic trips</span></div><div class="val">16.59M</div><div class="chg down">−3% <span data-th>เทียบ พ.ค. 2568</span><span data-en>YoY</span></div></div>
+      <div class="kpi"><div class="lbl"><span data-th>รายได้ในประเทศ</span><span data-en>Domestic revenue</span></div><div class="val">฿89,989M</div><div class="chg down">−12% <span data-th>เทียบ พ.ค. 2568</span><span data-en>YoY</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: FOREIGN -->
+<section class="block" id="s1">
+  <div class="wrap">
+    <div class="sec-head"><div class="num">1</div><h2><span data-th>ตลาดต่างประเทศ</span><span data-en>Foreign Market</span></h2></div>
+    <p class="sec-sub"><span data-th>จำนวนนักท่องเที่ยวมีแนวโน้มลดลงจากผลกระทบวิกฤตพลังงาน — ราคาบัตรโดยสารสูงขึ้นและการปรับลดแผนการบินเข้าไทย</span><span data-en>Arrivals trend lower as the energy crisis pushes airfares up and airlines trim flights into Thailand.</span></p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3><span data-th>TOP 5 นักท่องเที่ยว — Short-haul</span><span data-en>TOP 5 Arrivals — Short-haul</span></h3>
+        <div class="h-note"><span data-th>หน่วย: คน · (+/−) เทียบ พ.ค. 2568</span><span data-en>Persons · (+/−) vs May 2025</span></div>
+        <div class="chart-box"><canvas id="cShort"></canvas></div>
+      </div>
+      <div class="card">
+        <h3><span data-th>TOP 5 นักท่องเที่ยว — Long-haul</span><span data-en>TOP 5 Arrivals — Long-haul</span></h3>
+        <div class="h-note"><span data-th>หน่วย: คน · (+/−) เทียบ พ.ค. 2568</span><span data-en>Persons · (+/−) vs May 2025</span></div>
+        <div class="chart-box"><canvas id="cLong"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:22px">
+      <div class="card">
+        <h3><span data-th>สัดส่วนตลาด</span><span data-en>Market split</span></h3>
+        <div class="h-note">Short-haul vs Long-haul</div>
+        <div class="split-bar"><div class="s" style="width:79%"></div><div class="l" style="width:21%"></div></div>
+        <div><span class="pill s">Short-haul 79%</span> &nbsp; <span class="pill l">Long-haul 21%</span></div>
+        <p class="source"><span data-th>นักท่องเที่ยวส่วนใหญ่มาจากตลาดระยะใกล้ นำโดยจีน มาเลเซีย และอินเดีย</span><span data-en>Most arrivals come from short-haul markets, led by China, Malaysia and India.</span></p>
+      </div>
+      <div class="card">
+        <h3>Forward Booking</h3>
+        <div class="h-note">ForwardKeys · <span data-th>เทียบ พ.ค. 2568</span><span data-en>vs May 2025</span></div>
+        <div style="display:flex;gap:18px;margin:6px 0 12px">
+          <div><div style="font-size:12px;color:var(--muted)"><span data-th>ค้นหาเที่ยวบิน</span><span data-en>Flight search</span></div><div style="font-size:26px;font-weight:800" class="down-i">−3%</div></div>
+          <div><div style="font-size:12px;color:var(--muted)"><span data-th>ยอดจองล่วงหน้า</span><span data-en>Forward bookings</span></div><div style="font-size:26px;font-weight:800" class="up-i">+6%</div></div>
+        </div>
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:5px"><span data-th>5 ตลาดยอดจองโตสูงสุด</span><span data-en>Fastest-growing booking markets</span></div>
+        <div class="mini">
+          <span>Kazakhstan <b class="up-i">+79%</b></span><span>Argentina <b class="up-i">+37%</b></span><span>UAE <b class="up-i">+34%</b></span><span>Myanmar <b class="up-i">+32%</b></span><span>Spain <b class="up-i">+32%</b></span>
+        </div>
+        <div style="font-size:12.5px;font-weight:700;margin:12px 0 5px"><span data-th>ตลาดที่จองลดลงมากสุด</span><span data-en>Sharpest booking declines</span></div>
+        <div class="mini">
+          <span>S. Korea <b class="down-i">−57%</b></span><span>Indonesia <b class="down-i">−32%</b></span><span>Vietnam <b class="down-i">−31%</b></span><span>Australia <b class="down-i">−29%</b></span>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span data-th>แผนการบิน</span><span data-en>Flight plan</span></h3>
+        <div class="h-note">OAG · <span data-th>เทียบ พ.ค. 2568</span><span data-en>vs May 2025</span></div>
+        <div style="display:flex;align-items:baseline;gap:8px"><div style="font-size:30px;font-weight:800">3.6M</div><div style="font-size:13px;color:var(--muted)"><span data-th>ที่นั่ง</span><span data-en>seats</span> · <b class="down-i">−2%</b></div></div>
+        <p style="font-size:12.5px;color:var(--muted);margin:2px 0 12px"><span data-th>ฟื้นตัว 83% เทียบ พ.ค. 2562</span><span data-en>Recovered to 83% of May 2019</span></p>
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:6px"><span data-th>7 เส้นทางบินตรงใหม่เข้าไทย</span><span data-en>7 new direct routes to Thailand</span></div>
+        <div class="mini">
+          <span>Seoul–Chiang Mai</span><span>Seoul–BKK</span><span>HK–BKK</span><span>SIN–BKK</span><span>KL–BKK</span><span>Phnom Penh–BKK</span><span>Sharjah–Phuket <b class="pill l" style="padding:1px 6px">Long</b></span>
+        </div>
+      </div>
+    </div>
+    <p class="source"><span data-th>ที่มา: ระบบ ForwardKeys และ OAG (27 เม.ย. 2569); ประมาณการโดยกองกลยุทธ์การตลาด ททท.</span><span data-en>Source: ForwardKeys &amp; OAG (27 Apr 2026); estimates by TAT Marketing Strategy Division.</span></p>
+  </div>
+</section>
+
+<!-- SECTION 2: FOREIGN DRIVERS -->
+<section class="block" id="s2">
+  <div class="wrap">
+    <div class="sec-head"><div class="num">2</div><h2><span data-th>ปัจจัยที่ส่งผลต่อนักท่องเที่ยวต่างชาติ</span><span data-en>Drivers of Foreign Demand</span></h2></div>
+    <p class="sec-sub"><span data-th>ปัจจัยสนับสนุนและปัจจัยอุปสรรคต่อการเดินทางเข้าไทย</span><span data-en>Supporting tailwinds and headwinds for inbound travel.</span></p>
+    <div class="grid2">
+      <div class="card sup">
+        <h3><span data-th>ปัจจัยสนับสนุน</span><span data-en>Supporting factors</span></h3>
+        <div class="factor tag-sup"><div class="ic">🇨🇳</div><div><div class="ft"><span data-th>วันแรงงานจีน (China Labour Day)</span><span data-en>China Labour Day</span></div><div class="fd"><span data-th>นักท่องเที่ยวจีนเข้าไทยมีแนวโน้ม +29% (1–5 พ.ค. 2569 เทียบปีก่อน) · ไทยติด Top 3 จุดหมายยอดนิยม · เปิด 3 เส้นทางบินตรงใหม่จากจีน (Hangzhou, Shenzhen, Yangzhou) · พฤติกรรมจอง “Early Lock-in”</span><span data-en>Chinese arrivals trending +29% (1–5 May 2026 YoY) · Thailand a Top-3 destination · 3 new direct routes from China (Hangzhou, Shenzhen, Yangzhou) · “Early Lock-in” booking behaviour</span></div></div></div>
+        <div class="factor tag-sup"><div class="ic">🎤</div><div><div class="ft"><span data-th>Concert-Driven Tourism — ดึง demand ช่วง Low Season</span><span data-en>Concert-Driven Tourism — lifts low-season demand</span></div><div class="fd"><span data-th>Fan Travel: แฟนคลับบินข้ามประเทศดูคอนเสิร์ต (K-pop/J-pop) · Trip Bundling: เที่ยว + ดูคอนเสิร์ต 3–5 วัน · Regional Tour Effect: ไทยค่าครองชีพถูกกว่าญี่ปุ่น/เกาหลี · คอนเสิร์ต GMMTV ‘LOL2026’ (22–24 พ.ค.) ดันยอดค้นหาเที่ยวบินสูงสุด 6.8 ล้านครั้ง (+8%) · สัดส่วนแฟน: มาเลเซีย 17.1%, ฟิลิปปินส์ 5.3%, จีน 4.4%</span><span data-en>Fan Travel: fans fly cross-border for concerts (K-pop/J-pop) · Trip Bundling: travel + concert over 3–5 days · Regional Tour Effect: Thailand cheaper than Japan/Korea · GMMTV ‘LOL2026’ concert (22–24 May) drove flight searches to a 6.8M peak (+8%) · Fan mix: Malaysia 17.1%, Philippines 5.3%, China 4.4%</span></div></div></div>
+      </div>
+      <div class="card obs">
+        <h3><span data-th>ปัจจัยอุปสรรค</span><span data-en>Headwinds</span></h3>
+        <div class="factor tag-obs"><div class="ic">⛽</div><div><div class="ft"><span data-th>วิกฤตพลังงาน — ต้นทุนสูง ราคาบัตรโดยสารพุ่ง</span><span data-en>Energy crisis — costs up, airfares surge</span></div><div class="fd"><span data-th>สายการบินจีนปรับค่าโดยสาร &gt;50% (เช่น Juneyao, Spring, Xiamen) · สายการบินญี่ปุ่น +70–140% (JAL, ANA) · Thai Airways ลดเที่ยวบิน ~5% (≈46 เที่ยว/วัน) · Thai AirAsia ลดเที่ยวบิน ~30%</span><span data-en>Chinese carriers raise fares &gt;50% (Juneyao, Spring, Xiamen) · Japanese carriers +70–140% (JAL, ANA) · Thai Airways cuts ~5% of flights (≈46/day) · Thai AirAsia cuts ~30%</span></div></div></div>
+        <div class="factor tag-obs"><div class="ic">📉</div><div><div class="ft"><span data-th>IMF ปรับลด GDP โลก</span><span data-en>IMF cuts global GDP</span></div><div class="fd"><span data-th>GDP โลกปี 2569 อยู่ที่ 3.1% (−0.2) · สหรัฐฯ 2.3% · ยูโรโซน 1.1% · จีน 4.4%</span><span data-en>World GDP 2026 at 3.1% (−0.2pp) · USA 2.3% · Eurozone 1.1% · China 4.4%</span></div></div></div>
+        <div class="factor tag-obs"><div class="ic">🌏</div><div><div class="ft"><span data-th>การแข่งขันด้านการท่องเที่ยว</span><span data-en>Tourism competition</span></div><div class="fd"><span data-th>เกาหลีใต้: Golden Week, K-culture, Medical &amp; Beauty, ราคาถูกกว่า 40–70% · ญี่ปุ่น: เงินเยนอ่อน, ยุโรป +15–40%/เยอรมนี +12%/ออสเตรเลีย +10% · เวียดนาม: เจาะอินเดีย (Wedding, Halal) — นักท่องเที่ยวอินเดีย +69% (ม.ค.–มี.ค. 69)</span><span data-en>South Korea: Golden Week, K-culture, medical &amp; beauty, 40–70% cheaper · Japan: weak yen, Europe +15–40%/Germany +12%/Australia +10% · Vietnam: targeting India (wedding, halal) — Indian arrivals +69% (Jan–Mar 2026)</span></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: DOMESTIC -->
+<section class="block" id="s3">
+  <div class="wrap">
+    <div class="sec-head"><div class="num">3</div><h2><span data-th>ตลาดในประเทศ</span><span data-en>Domestic Market</span></h2></div>
+    <p class="sec-sub"><span data-th>ทุกภูมิภาคมีแนวโน้มลดลงทั้งจำนวนและรายได้ — ภาคใต้และภาคเหนือลดลงมากที่สุดด้านรายได้ (สะสม ม.ค.–พ.ค.: 85.32 ล้านคน-ครั้ง +0.1%, รายได้ 457,241 ล้านบาท −4%)</span><span data-en>Every region trends lower in both trips and revenue — South and North fall most on revenue. (YTD Jan–May: 85.32M trips +0.1%, ฿457,241M revenue −4%.)</span></p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3><span data-th>จำนวนผู้เยี่ยมเยือนรายภาค</span><span data-en>Visitors by region</span></h3>
+        <div class="h-note"><span data-th>ล้านคน-ครั้ง · (+/−) เทียบ พ.ค. 2568</span><span data-en>Million person-trips · (+/−) YoY</span></div>
+        <div class="chart-box sm"><canvas id="cRegVis"></canvas></div>
+      </div>
+      <div class="card">
+        <h3><span data-th>รายได้รายภาค</span><span data-en>Revenue by region</span></h3>
+        <div class="h-note"><span data-th>ล้านบาท · (+/−) เทียบ พ.ค. 2568</span><span data-en>Million baht · (+/−) YoY</span></div>
+        <div class="chart-box sm"><canvas id="cRegRev"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:22px">
+      <div class="card">
+        <h3><span data-th>TOP 5 เมืองหลัก (22 เมือง)</span><span data-en>TOP 5 Main Cities (of 22)</span></h3>
+        <div class="h-note"><span data-th>รวม 13,292,200 คน-ครั้ง (−3.9%) · สัดส่วน 59% ผู้เยี่ยมเยือน / 72% รายได้</span><span data-en>Total 13,292,200 trips (−3.9%) · 59% of visitors / 72% of revenue</span></div>
+        <table class="tbl"><thead><tr><th><span data-th>จังหวัด</span><span data-en>Province</span></th><th style="text-align:right"><span data-th>คน-ครั้ง</span><span data-en>Trips</span></th><th style="text-align:right">Growth</th></tr></thead><tbody>
+          <tr><td><span data-th>ชลบุรี</span><span data-en>Chonburi</span></td><td class="n">1,454,100</td><td class="g down-i">−1.2%</td></tr>
+          <tr><td><span data-th>ฉะเชิงเทรา</span><span data-en>Chachoengsao</span></td><td class="n">480,600</td><td class="g down-i">−2.6%</td></tr>
+          <tr><td><span data-th>สระบุรี</span><span data-en>Saraburi</span></td><td class="n">386,400</td><td class="g down-i">−1.6%</td></tr>
+          <tr><td><span data-th>กระบี่</span><span data-en>Krabi</span></td><td class="n">143,200</td><td class="g down-i">−0.9%</td></tr>
+          <tr><td><span data-th>สมุทรสาคร</span><span data-en>Samut Sakhon</span></td><td class="n">138,400</td><td class="g up-i">+0.3%</td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <h3><span data-th>TOP 5 เมืองน่าเที่ยว (55 เมือง)</span><span data-en>TOP 5 Emerging Cities (of 55)</span></h3>
+        <div class="h-note"><span data-th>รวม 9,255,200 คน-ครั้ง (−4.1%) · สัดส่วน 41% ผู้เยี่ยมเยือน / 28% รายได้</span><span data-en>Total 9,255,200 trips (−4.1%) · 41% of visitors / 28% of revenue</span></div>
+        <table class="tbl"><thead><tr><th><span data-th>จังหวัด</span><span data-en>Province</span></th><th style="text-align:right"><span data-th>คน-ครั้ง</span><span data-en>Trips</span></th><th style="text-align:right">Growth</th></tr></thead><tbody>
+          <tr><td><span data-th>นครนายก</span><span data-en>Nakhon Nayok</span></td><td class="n">241,800</td><td class="g up-i">+0.4%</td></tr>
+          <tr><td><span data-th>หนองคาย</span><span data-en>Nong Khai</span></td><td class="n">213,200</td><td class="g down-i">−0.1%</td></tr>
+          <tr><td><span data-th>ตราด</span><span data-en>Trat</span></td><td class="n">203,700</td><td class="g up-i">+2.8%</td></tr>
+          <tr><td><span data-th>มุกดาหาร</span><span data-en>Mukdahan</span></td><td class="n">144,900</td><td class="g down-i">−0.1%</td></tr>
+          <tr><td><span data-th>บึงกาฬ</span><span data-en>Bueng Kan</span></td><td class="n">68,700</td><td class="g down-i">−0.3%</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <p class="source"><span data-th>ที่มา: ประมาณการโดยกองกลยุทธ์การตลาด ททท. (ข้อมูล ณ 23–30 เม.ย. 2569)</span><span data-en>Source: estimates by TAT Marketing Strategy Division (data as of 23–30 Apr 2026).</span></p>
+  </div>
+</section>
+
+<!-- SECTION 4: DOMESTIC FACTORS -->
+<section class="block" id="s4">
+  <div class="wrap">
+    <div class="sec-head"><div class="num">4</div><h2><span data-th>ปัจจัยที่ส่งผลต่อผู้เยี่ยมเยือนชาวไทย</span><span data-en>Factors Affecting Thai Travellers</span></h2></div>
+    <p class="sec-sub"><span data-th>ปัจจัยสนับสนุนและปัจจัยอุปสรรคต่อการเดินทางในประเทศ</span><span data-en>Domestic-travel tailwinds and headwinds.</span></p>
+    <div class="grid2">
+      <div class="card sup">
+        <h3><span data-th>ปัจจัยสนับสนุน</span><span data-en>Supporting factors</span></h3>
+        <div class="factor tag-sup"><div class="ic">📅</div><div><div class="ft"><span data-th>วันหยุดยาวต้นเดือน (1–4 พ.ค. 2569)</span><span data-en>Early-month long weekend (1–4 May 2026)</span></div><div class="fd"><span data-th>วันวิสาขบูชา + วันพืชมงคล หนุนการเดินทางระยะใกล้กรุงเทพฯ</span><span data-en>Visakha Bucha + Royal Ploughing Ceremony spur short trips near Bangkok.</span></div></div></div>
+        <div class="factor tag-sup"><div class="ic">🚆</div><div><div class="ft"><span data-th>เทรนด์เที่ยวด้วยรถไฟ</span><span data-en>Rail-travel trend</span></div><div class="fd"><span data-th>One Day Trip +30% · ยอดค้นหา Google Trends +350% (16–27 เม.ย.)</span><span data-en>One-day trips +30% · Google Trends searches +350% (16–27 Apr).</span></div></div></div>
+        <div class="factor tag-sup"><div class="ic">🎉</div><div><div class="ft"><span data-th>เทศกาล / งานประเพณี</span><span data-en>Festivals &amp; events</span></div><div class="fd"><span data-th>Amazing Thailand Q2 Festival &amp; Trail Running 2026 · จุดหมายมาแรง: ทะเล (พัทยา, เกาะล้าน, เกาะเสม็ด, หัวหิน, เกาะช้าง) และภูเขา (เขาใหญ่, กาญจนบุรี, แก่งกระจาน)</span><span data-en>Amazing Thailand Q2 Festival &amp; Trail Running 2026 · trending spots: beaches (Pattaya, Koh Larn, Koh Samet, Hua Hin, Koh Chang) and mountains (Khao Yai, Kanchanaburi, Kaeng Krachan).</span></div></div></div>
+      </div>
+      <div class="card obs">
+        <h3><span data-th>ปัจจัยอุปสรรค</span><span data-en>Headwinds</span></h3>
+        <div class="factor tag-obs"><div class="ic">💸</div><div><div class="ft"><span data-th>ภาวะเศรษฐกิจ &amp; วิกฤตน้ำมัน</span><span data-en>Economy &amp; oil-price pressure</span></div><div class="fd"><span data-th>ค่าครองชีพและราคาน้ำมันกดการใช้จ่าย · Agoda Travel Outlook 2026 ชี้เทรนด์ “Slow Travel” เที่ยวใกล้-นานขึ้น คุมงบ</span><span data-en>Cost of living and fuel prices weigh on spending · Agoda Travel Outlook 2026 points to “Slow Travel” — closer, longer, budget-conscious trips.</span></div></div></div>
+        <div class="factor tag-obs"><div class="ic">🌧️</div><div><div class="ft"><span data-th>เข้าสู่ฤดูฝน — สภาพอากาศแปรปรวน</span><span data-en>Onset of rainy season — variable weather</span></div><div class="fd"><span data-th>ฝนต้นฤดู (Low Season) อาจกระทบแผนเดินทางและกิจกรรมกลางแจ้ง</span><span data-en>Early-season rains (low season) may disrupt travel plans and outdoor activities.</span></div></div></div>
+      </div>
+    </div>
+    <p class="source"><span data-th>ที่มา: Google Trends, Agoda Travel Outlook 2026, GMMTV LOL2026 fan survey และการรวบรวมโดยกองกลยุทธ์การตลาด ททท.</span><span data-en>Source: Google Trends, Agoda Travel Outlook 2026, GMMTV LOL2026 fan survey, compiled by TAT Marketing Strategy Division.</span></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b><span data-th>การท่องเที่ยวแห่งประเทศไทย (ททท.)</span><span data-en>Tourism Authority of Thailand (TAT)</span></b><br><span data-th>งานวิเคราะห์ตลาดต่างประเทศ · กองกลยุทธ์การตลาด</span><span data-en>International Market Analysis · Marketing Strategy Division</span></div>
+    <div style="text-align:right"><span data-th>คาดการณ์ พฤษภาคม 2569 · ข้อมูล ณ 27–30 เมษายน 2569</span><span data-en>Forecast for May 2026 · data as of 27–30 April 2026</span><br><span style="opacity:.6"><span data-th>เว็บไซต์สรุปจากอินโฟกราฟิกต้นฉบับของ ททท.</span><span data-en>Web summary built from TAT's original infographic.</span></span></div>
+  </div>
+</footer>
+
+<script>
+const T = {
+  short:{ labels_th:['จีน','มาเลเซีย','อินเดีย','สิงคโปร์','เกาหลีใต้'], labels_en:['China','Malaysia','India','Singapore','South Korea'],
+          vals:[403000,308000,232000,76000,76000], g:['+30%','-20%','+2%','-1%','-17%'] },
+  long:{ labels_th:['รัสเซีย','สหรัฐฯ','สหราชอาณาจักร','ฝรั่งเศส','เยอรมนี'], labels_en:['Russia','USA','UK','France','Germany'],
+          vals:[81000,67000,56000,36000,30000], g:['-3%','-2%','-16%','-7%','-22%'] },
+  regVis:{ labels_th:['กลาง+ตะวันตก','ตะวันออก','ตอ.เฉียงเหนือ','กรุงเทพฯ','เหนือ','ใต้'], labels_en:['Central+West','East','Northeast','Bangkok','North','South'],
+          vals:[5.21,2.60,2.54,2.48,2.02,1.75], g:['-1.2%','-0.6%','-2.5%','-4.0%','-4.1%','+6.0%'] },
+  regRev:{ labels_th:['กรุงเทพฯ','ตะวันออก','กลาง+ตะวันตก','ใต้','เหนือ','ตอ.เฉียงเหนือ'], labels_en:['Bangkok','East','Central+West','South','North','Northeast'],
+          vals:[22679,17110,15574,14421,12215,7990], g:['+0.7%','-8.5%','-0.7%','-16.3%','-14.4%','-11.6%'] }
+};
+let LANG='th';
+const charts={};
+const fmt=n=> n>=1000? n.toLocaleString():n;
+function barColors(g){return g.map(v=> v.startsWith('-')?'#e03131':'#2f9e44');}
+function softColors(g){return g.map(v=> v.startsWith('-')?'rgba(224,49,49,.85)':'rgba(47,158,68,.85)');}
+
+function gLabel(ctx, data){ return data.g[ctx.dataIndex]; }
+
+function makeBar(id, d, horizontal){
+  const ctx=document.getElementById(id);
+  const labels = LANG==='th'? d.labels_th : d.labels_en;
+  charts[id]=new Chart(ctx,{
+    type:'bar',
+    data:{ labels, datasets:[{ data:d.vals, backgroundColor:softColors(d.g), borderRadius:6, barThickness: horizontal?20:34 }]},
+    options:{
+      indexAxis: horizontal?'y':'x',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label:(c)=> ' '+fmt(c.parsed[horizontal?'x':'y'])+'  ('+d.g[c.dataIndex]+')' } } },
+      scales:{
+        x:{ grid:{display:horizontal, color:'#eef2f3'},
+            ticks:{ font:{size:11}, autoSkip:false, maxRotation:0,
+              callback:function(v){ if(!horizontal) return this.getLabelForValue(v); return v>=1000? (v/1000)+'k': v; } } },
+        y:{ grid:{display:!horizontal, color:'#eef2f3'},
+            ticks:{ font:{size:11},
+              callback:function(v){ if(horizontal) return this.getLabelForValue(v); return v>=1000? (v/1000)+'k': v; } } }
+      }
+    }
+  });
+  // growth annotations via after-draw
+  charts[id].options.animation={onComplete:()=>drawG(charts[id],d,horizontal)};
+  charts[id].update();
+}
+function drawG(ch,d,horizontal){
+  const a=ch.ctx; a.save(); a.font='700 11px Inter';
+  ch.data.datasets[0].data.forEach((val,i)=>{
+    const m=ch.getDatasetMeta(0).data[i]; if(!m)return;
+    a.fillStyle = d.g[i].startsWith('-')? '#e03131':'#2f9e44';
+    if(horizontal){ a.textAlign='left'; a.fillText(d.g[i], m.x+6, m.y+4); }
+    else { a.textAlign='center'; a.fillText(d.g[i], m.x, m.y-6); }
+  });
+  a.restore();
+}
+function buildAll(){
+  ['cShort','cLong','cRegVis','cRegRev'].forEach(id=>{ if(charts[id]){charts[id].destroy();}});
+  makeBar('cShort',T.short,false);
+  makeBar('cLong',T.long,false);
+  makeBar('cRegVis',T.regVis,true);
+  makeBar('cRegRev',T.regRev,true);
+}
+document.getElementById('langBtn').addEventListener('click',()=>{
+  LANG = LANG==='th'?'en':'th';
+  document.body.className = LANG;
+  document.documentElement.lang = LANG;
+  document.getElementById('langBtn').textContent = LANG==='th'?'EN':'ไทย';
+  buildAll();
+});
+buildAll();
+</script>
+</body>
+</html>
