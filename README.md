@@ -1,4 +1,3 @@
-```markdown
 # Thailand Tourism Outlook — May 2026
 
 An interactive, bilingual (Thai / English) web recreation of the Tourism Authority of Thailand (TAT) market-trends infographic for **May 2026 (พฤษภาคม 2569)**. It turns a static 4-page PDF into a single scrolling web page with live charts, data tables, and a language toggle.
@@ -58,6 +57,6 @@ Static hosting only — drop `index.html` onto GitHub Pages, Netlify, Cloudflare
 ## Attribution
 
 Data and original infographic © Tourism Authority of Thailand (TAT), Marketing Strategy Division. Underlying sources cited in the infographic: ForwardKeys, OAG, Google Trends, IMF, Agoda Travel Outlook 2026. This web version is a presentation layer over that published material.
-```
+
 
 Want me write this to `README.md` in your folder?
